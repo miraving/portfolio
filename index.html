@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
   <title>Vitalii Obertynskyi — iOS Developer</title>
   <style>
     *, *::before, *::after {
@@ -14,12 +15,55 @@
     :root {
       --bg: #080808;
       --surface: #111111;
+      --surface-hover: #161616;
       --border: #1e1e1e;
       --muted: #3a3a3a;
       --text: #e8e8e8;
       --text-dim: #888;
       --accent: #0a84ff;
       --accent-dim: rgba(10, 132, 255, 0.12);
+      --nav-bg: rgba(8, 8, 8, 0.85);
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #EFEDE3;
+        --surface: #e5e3d9;
+        --surface-hover: #dddbd1;
+        --border: #d8d6cc;
+        --muted: #c0c0c0;
+        --text: #302F2C;
+        --text-dim: #6e6e73;
+        --accent: #0071e3;
+        --accent-dim: rgba(0, 113, 227, 0.1);
+        --nav-bg: rgba(239, 237, 227, 0.85);
+      }
+    }
+
+    html.dark {
+      --bg: #080808;
+      --surface: #111111;
+      --surface-hover: #161616;
+      --border: #1e1e1e;
+      --muted: #3a3a3a;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --accent: #0a84ff;
+      --accent-dim: rgba(10, 132, 255, 0.12);
+      --nav-bg: rgba(8, 8, 8, 0.85);
+    }
+
+    html.light {
+      --bg: #EFEDE3;
+      --surface: #e5e3d9;
+      --surface-hover: #dddbd1;
+      --border: #d8d6cc;
+      --muted: #c0c0c0;
+      --text: #302F2C;
+      --text-dim: #6e6e73;
+      --accent: #0071e3;
+      --accent-dim: rgba(0, 113, 227, 0.1);
+      --nav-bg: rgba(239, 237, 227, 0.85);
     }
 
     html {
@@ -33,6 +77,7 @@
       font-size: 16px;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
+      color-scheme: light dark;
     }
 
     /* Nav */
@@ -46,7 +91,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px 48px;
-      background: rgba(8, 8, 8, 0.85);
+      background: var(--nav-bg);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
@@ -75,6 +120,12 @@
 
     .nav-links a:hover {
       color: var(--text);
+    }
+
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     /* Hero */
@@ -254,19 +305,16 @@
 
     .skill-card:hover {
       border-color: var(--muted);
-      background: #161616;
+      background: var(--surface-hover);
     }
 
     .skill-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 7px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
       flex-shrink: 0;
-      background: var(--accent-dim);
+      background: var(--accent);
+      opacity: 0.6;
     }
 
     .skill-name {
@@ -397,9 +445,12 @@
     }
 
     .contact-link-icon {
-      font-size: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
       width: 24px;
       text-align: center;
+      color: var(--accent);
     }
 
     .contact-link-label {
@@ -426,6 +477,56 @@
       font-size: 13px;
       color: var(--text-dim);
     }
+
+    /* Nav control buttons (theme + lang) */
+    .theme-toggle,
+    .lang-toggle {
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle {
+      width: 34px;
+    }
+
+    .lang-toggle {
+      padding: 0 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .theme-toggle:hover,
+    .lang-toggle:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    .icon-sun,
+    .icon-moon {
+      display: none;
+    }
+
+    .icon-sun { display: block; }
+
+    @media (prefers-color-scheme: light) {
+      .icon-sun { display: none; }
+      .icon-moon { display: block; }
+    }
+
+    html.dark .icon-sun { display: block; }
+    html.dark .icon-moon { display: none; }
+    html.light .icon-sun { display: none; }
+    html.light .icon-moon { display: block; }
 
     /* Responsive */
     @media (max-width: 640px) {
@@ -466,27 +567,46 @@
   <nav>
     <a href="#" class="nav-logo">VO</a>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#about" data-i18n="nav.about">About</a></li>
+      <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+      <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+      <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
+    <div class="nav-controls">
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">UA</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="8" cy="8" r="3"/>
+          <line x1="8" y1="1" x2="8" y2="2.5"/>
+          <line x1="8" y1="13.5" x2="8" y2="15"/>
+          <line x1="1" y1="8" x2="2.5" y2="8"/>
+          <line x1="13.5" y1="8" x2="15" y2="8"/>
+          <line x1="2.93" y1="2.93" x2="4.05" y2="4.05"/>
+          <line x1="11.95" y1="11.95" x2="13.07" y2="13.07"/>
+          <line x1="2.93" y1="13.07" x2="4.05" y2="11.95"/>
+          <line x1="11.95" y1="4.05" x2="13.07" y2="2.93"/>
+        </svg>
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M13.5 10a6 6 0 0 1-7.5-7.5 6 6 0 1 0 7.5 7.5z"/>
+        </svg>
+      </button>
+    </div>
   </nav>
 
   <!-- Hero -->
   <div class="hero">
-    <p class="hero-label">iOS Developer</p>
+    <p class="hero-label" data-i18n="hero.label">iOS Developer</p>
     <h1>
       Vitalii<br />
       <span class="dim">Obertynskyi</span>
     </h1>
-    <p class="hero-description">
+    <p class="hero-description" data-i18n="hero.desc">
       Crafting polished iOS experiences with Swift and SwiftUI.
       Focused on clean architecture, performance, and Apple platform best practices.
     </p>
     <div class="hero-cta">
-      <a href="#projects" class="btn btn-primary">View Projects</a>
-      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+      <a href="#projects" class="btn btn-primary" data-i18n="hero.cta.view">View Projects</a>
+      <a href="#contact" class="btn btn-ghost" data-i18n="hero.cta.touch">Get in Touch</a>
     </div>
   </div>
 
@@ -494,19 +614,19 @@
 
   <!-- About -->
   <section id="about">
-    <p class="section-label">About</p>
-    <h2 class="section-title">Building for Apple platforms</h2>
+    <p class="section-label" data-i18n="about.label">About</p>
+    <h2 class="section-title" data-i18n="about.title">Building for Apple platforms</h2>
     <div class="about-grid">
       <div class="about-text">
-        <p>
+        <p data-i18n="about.p1">
           I'm an iOS developer passionate about creating intuitive and high-quality mobile applications.
           I focus on writing clean, maintainable Swift code and delivering experiences users love.
         </p>
-        <p>
+        <p data-i18n="about.p2">
           I work across the full iOS stack — from UI design with SwiftUI and UIKit,
           to networking, persistence, and App Store submission.
         </p>
-        <p>
+        <p data-i18n="about.p3">
           When I'm not writing Swift, I'm exploring new Apple APIs, contributing to open source,
           and keeping up with what's new in the Apple ecosystem.
         </p>
@@ -514,15 +634,15 @@
       <div class="about-stats">
         <div class="stat">
           <div class="stat-number">Swift</div>
-          <div class="stat-label">Primary language</div>
+          <div class="stat-label" data-i18n="about.stat1">Primary language</div>
         </div>
         <div class="stat">
           <div class="stat-number">iOS</div>
-          <div class="stat-label">Platform focus</div>
+          <div class="stat-label" data-i18n="about.stat2">Platform focus</div>
         </div>
         <div class="stat">
           <div class="stat-number">App Store</div>
-          <div class="stat-label">Shipped apps</div>
+          <div class="stat-label" data-i18n="about.stat3">Shipped apps</div>
         </div>
       </div>
     </div>
@@ -532,57 +652,21 @@
 
   <!-- Skills -->
   <section id="skills">
-    <p class="section-label">Skills</p>
-    <h2 class="section-title">Technologies & tools</h2>
+    <p class="section-label" data-i18n="skills.label">Skills</p>
+    <h2 class="section-title" data-i18n="skills.title">Technologies & tools</h2>
     <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-icon">🦅</div>
-        <span class="skill-name">Swift</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🖼</div>
-        <span class="skill-name">SwiftUI</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">📱</div>
-        <span class="skill-name">UIKit</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🔄</div>
-        <span class="skill-name">Combine</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">💾</div>
-        <span class="skill-name">Core Data</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🌐</div>
-        <span class="skill-name">URLSession</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🏗</div>
-        <span class="skill-name">MVVM / VIPER</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🧪</div>
-        <span class="skill-name">XCTest</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🔧</div>
-        <span class="skill-name">Xcode</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">📦</div>
-        <span class="skill-name">SPM / CocoaPods</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🌿</div>
-        <span class="skill-name">Git</span>
-      </div>
-      <div class="skill-card">
-        <div class="skill-icon">🚀</div>
-        <span class="skill-name">App Store Connect</span>
-      </div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">Swift</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">SwiftUI</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">UIKit</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">Combine</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">Core Data</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">URLSession</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">MVVM / VIPER</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">XCTest</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">Xcode</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">SPM / CocoaPods</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">Git</span></div>
+      <div class="skill-card"><div class="skill-icon"></div><span class="skill-name">App Store Connect</span></div>
     </div>
   </section>
 
@@ -590,77 +674,33 @@
 
   <!-- Projects -->
   <section id="projects">
-    <p class="section-label">Projects</p>
-    <h2 class="section-title">Selected work</h2>
-    <div class="projects-list">
-
-      <div class="project-card">
-        <div>
-          <span class="project-tag">iOS App</span>
-          <h3 class="project-title">Project One</h3>
-          <p class="project-desc">A native iOS application built with SwiftUI and Combine. Features a clean architecture with MVVM, offline support via Core Data, and a fully custom UI.</p>
-          <div class="project-tags">
-            <span class="tag">SwiftUI</span>
-            <span class="tag">Combine</span>
-            <span class="tag">Core Data</span>
-          </div>
-        </div>
-        <span class="project-arrow">→</span>
-      </div>
-
-      <div class="project-card">
-        <div>
-          <span class="project-tag">iOS App</span>
-          <h3 class="project-title">Project Two</h3>
-          <p class="project-desc">UIKit-based app with a custom navigation system, REST API integration, and smooth animations. Optimised for performance and accessibility.</p>
-          <div class="project-tags">
-            <span class="tag">UIKit</span>
-            <span class="tag">URLSession</span>
-            <span class="tag">VIPER</span>
-          </div>
-        </div>
-        <span class="project-arrow">→</span>
-      </div>
-
-      <div class="project-card">
-        <div>
-          <span class="project-tag">Open Source</span>
-          <h3 class="project-title">Project Three</h3>
-          <p class="project-desc">An open-source Swift package providing reusable components for iOS developers. Available via Swift Package Manager.</p>
-          <div class="project-tags">
-            <span class="tag">Swift</span>
-            <span class="tag">SPM</span>
-            <span class="tag">Open Source</span>
-          </div>
-        </div>
-        <span class="project-arrow">→</span>
-      </div>
-
-    </div>
+    <p class="section-label" data-i18n="projects.label">Projects</p>
+    <h2 class="section-title" data-i18n="projects.title">Selected work</h2>
+    <div class="projects-list" id="projectsList"></div>
   </section>
 
   <div class="divider"></div>
 
   <!-- Contact -->
   <section id="contact">
-    <p class="section-label">Contact</p>
-    <h2 class="section-title">Let's work together</h2>
+    <p class="section-label" data-i18n="contact.label">Contact</p>
+    <h2 class="section-title" data-i18n="contact.title">Let's work together</h2>
     <div class="contact-inner">
       <div class="contact-text">
-        <p>
+        <p data-i18n="contact.desc">
           Open to new opportunities, collaborations, and interesting iOS projects.
           Feel free to reach out — I'd love to hear what you're building.
         </p>
-        <a href="mailto:your@email.com" class="btn btn-primary">Send Email</a>
+        <a href="mailto:your@email.com" class="btn btn-primary" data-i18n="contact.btn">Send Email</a>
       </div>
       <div class="contact-links">
         <a href="https://www.linkedin.com/in/vober" target="_blank" rel="noopener" class="contact-link">
-          <span class="contact-link-icon">💼</span>
+          <span class="contact-link-icon">in</span>
           <span class="contact-link-label">LinkedIn</span>
           <span class="contact-link-arrow">↗</span>
         </a>
         <a href="https://github.com/" target="_blank" rel="noopener" class="contact-link">
-          <span class="contact-link-icon">🐙</span>
+          <span class="contact-link-icon">gh</span>
           <span class="contact-link-label">GitHub</span>
           <span class="contact-link-arrow">↗</span>
         </a>
@@ -671,8 +711,142 @@
   <!-- Footer -->
   <footer>
     <p>© 2026 Vitalii Obertynskyi</p>
-    <p>iOS Developer</p>
+    <p data-i18n="footer.role">iOS Developer</p>
   </footer>
 
+  <script>
+    const html = document.documentElement;
+
+    // ── Translations ──────────────────────────────────────────────
+    const t = {
+      en: {
+        'nav.about': 'About',
+        'nav.skills': 'Skills',
+        'nav.projects': 'Projects',
+        'nav.contact': 'Contact',
+        'hero.label': 'iOS Developer',
+        'hero.desc': 'Crafting polished iOS experiences with Swift and SwiftUI. Focused on clean architecture, performance, and Apple platform best practices.',
+        'hero.cta.view': 'View Projects',
+        'hero.cta.touch': 'Get in Touch',
+        'about.label': 'About',
+        'about.title': 'Building for Apple platforms',
+        'about.p1': "I'm an iOS developer passionate about creating intuitive and high-quality mobile applications. I focus on writing clean, maintainable Swift code and delivering experiences users love.",
+        'about.p2': 'I work across the full iOS stack — from UI design with SwiftUI and UIKit, to networking, persistence, and App Store submission.',
+        'about.p3': "When I'm not writing Swift, I'm exploring new Apple APIs, contributing to open source, and keeping up with what's new in the Apple ecosystem.",
+        'about.stat1': 'Primary language',
+        'about.stat2': 'Platform focus',
+        'about.stat3': 'Shipped apps',
+        'skills.label': 'Skills',
+        'skills.title': 'Technologies & tools',
+        'projects.label': 'Projects',
+        'projects.title': 'Selected work',
+        'contact.label': 'Contact',
+        'contact.title': "Let's work together",
+        'contact.desc': "Open to new opportunities, collaborations, and interesting iOS projects. Feel free to reach out — I'd love to hear what you're building.",
+        'contact.btn': 'Send Email',
+        'footer.role': 'iOS Developer',
+      },
+      uk: {
+        'nav.about': 'Про мене',
+        'nav.skills': 'Навички',
+        'nav.projects': 'Проєкти',
+        'nav.contact': 'Контакти',
+        'hero.label': 'iOS Розробник',
+        'hero.desc': 'Створюю полірований iOS-досвід за допомогою Swift та SwiftUI. Зосереджений на чистій архітектурі, продуктивності та кращих практиках платформи Apple.',
+        'hero.cta.view': 'Переглянути проєкти',
+        'hero.cta.touch': "Зв'язатися",
+        'about.label': 'Про мене',
+        'about.title': 'Розробляю для платформ Apple',
+        'about.p1': 'Я iOS-розробник, захоплений створенням інтуїтивних та якісних мобільних застосунків. Фокусуюсь на написанні чистого, підтримуваного коду Swift та досвіді, який люблять користувачі.',
+        'about.p2': 'Працюю з повним iOS-стеком — від дизайну інтерфейсів за допомогою SwiftUI та UIKit до мережевих запитів, збереження даних і публікації в App Store.',
+        'about.p3': 'Поза Swift — вивчаю нові Apple API, долучаюсь до open source та стежу за новинками екосистеми Apple.',
+        'about.stat1': 'Основна мова',
+        'about.stat2': 'Платформа',
+        'about.stat3': 'Опубліковані застосунки',
+        'skills.label': 'Навички',
+        'skills.title': 'Технології та інструменти',
+        'projects.label': 'Проєкти',
+        'projects.title': 'Вибрані роботи',
+        'contact.label': 'Контакти',
+        'contact.title': 'Працюймо разом',
+        'contact.desc': 'Відкритий до нових можливостей, співпраці та цікавих iOS-проєктів. Пишіть — буду радий почути про те, що ви будуєте.',
+        'contact.btn': 'Написати листа',
+        'footer.role': 'iOS Розробник',
+      }
+    };
+
+    // ── Projects ──────────────────────────────────────────────────
+    function renderProjects(data) {
+      const list = document.getElementById('projectsList');
+      list.innerHTML = data.map(p => `
+        <div class="project-card"${p.url ? ` style="cursor:pointer" onclick="window.open('${p.url}','_blank')"` : ''}>
+          <div>
+            <span class="project-tag">${p.tag}</span>
+            <h3 class="project-title">${p.title}</h3>
+            <p class="project-desc">${p.desc}</p>
+            <div class="project-tags">
+              ${p.tech.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+          </div>
+          <span class="project-arrow">→</span>
+        </div>
+      `).join('');
+    }
+
+    function loadProjects(lang) {
+      const file = lang === 'en' ? 'projects-en.json' : 'projects-ua.json';
+      fetch(file)
+        .then(r => r.json())
+        .then(data => renderProjects(data))
+        .catch(() => {
+          document.getElementById('projectsList').innerHTML =
+            '<p style="color:var(--text-dim);font-size:14px">Could not load projects. Run a local server to preview.</p>';
+        });
+    }
+
+    // ── Language ──────────────────────────────────────────────────
+    const langToggle = document.getElementById('langToggle');
+    let currentLang = localStorage.getItem('lang') || 'en';
+
+    function applyLang(lang) {
+      currentLang = lang;
+      html.lang = lang;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[lang][key]) el.textContent = t[lang][key];
+      });
+      loadProjects(lang);
+      langToggle.textContent = lang === 'en' ? 'UA' : 'EN';
+      localStorage.setItem('lang', lang);
+    }
+
+    applyLang(currentLang);
+
+    langToggle.addEventListener('click', () => {
+      applyLang(currentLang === 'en' ? 'uk' : 'en');
+    });
+
+    // ── Theme ─────────────────────────────────────────────────────
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) html.classList.add(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isLight = html.classList.contains('light');
+      const isDark = html.classList.contains('dark');
+      const currentlyDark = isDark || (!isLight && prefersDark);
+
+      html.classList.remove('light', 'dark');
+
+      if (currentlyDark) {
+        html.classList.add('light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+  </script>
 </body>
 </html>
