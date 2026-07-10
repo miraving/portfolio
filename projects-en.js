@@ -8,16 +8,9 @@ const PROJECTS_EN = [
   },
   {
     "tag": "iOS App",
-    "title": "Project Two",
-    "desc": "UIKit-based app with a custom navigation system, REST API integration, and smooth animations. Optimised for performance and accessibility.",
-    "tech": ["UIKit", "URLSession", "VIPER"],
-    "url": null
-  },
-  {
-    "tag": "Open Source",
-    "title": "Project Three",
-    "desc": "An open-source Swift package providing reusable components for iOS developers. Available via Swift Package Manager.",
-    "tech": ["Swift", "SPM", "Open Source"],
-    "url": null
+    "title": "Orthodox Prayer Book",
+    "desc": "An Orthodox prayer book with Church Slavonic texts in Ukrainian pronunciation — for those who value the living thousand-year tradition and want to pray in their native phonetics without changing the liturgical vocabulary.",
+    "tech": ["SwiftUI", "Combine", "REST"],
+    "url": "https://apps.apple.com/us/app/id6502382521"
   }
 ];
