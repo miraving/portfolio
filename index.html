@@ -528,14 +528,85 @@
     html.light .icon-sun { display: none; }
     html.light .icon-moon { display: block; }
 
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    .hamburger:hover {
+      border-color: var(--muted);
+      color: var(--text);
+    }
+
+    .hamburger .icon-close { display: none; }
+    .hamburger.open .icon-open { display: none; }
+    .hamburger.open .icon-close { display: block; }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 65px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      flex-direction: column;
+      background: var(--nav-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px 16px;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .mobile-menu a {
+      display: block;
+      padding: 14px 0;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 15px;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:last-child {
+      border-bottom: none;
+    }
+
+    .mobile-menu a:hover {
+      color: var(--text);
+    }
+
     /* Responsive */
     @media (max-width: 640px) {
       nav {
         padding: 16px 24px;
       }
 
+      .nav-links li.nav-desktop {
+        display: none;
+      }
+
       .nav-links {
-        gap: 20px;
+        gap: 16px;
+      }
+
+      .hamburger {
+        display: flex;
       }
 
       .hero {
@@ -567,8 +638,8 @@
   <nav>
     <a href="#" class="nav-logo">VO</a>
     <ul class="nav-links">
-      <li><a href="#about" data-i18n="nav.about">About</a></li>
-      <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+      <li class="nav-desktop"><a href="#about" data-i18n="nav.about">About</a></li>
+      <li class="nav-desktop"><a href="#skills" data-i18n="nav.skills">Skills</a></li>
       <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
       <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
     </ul>
@@ -590,15 +661,32 @@
           <path d="M13.5 10a6 6 0 0 1-7.5-7.5 6 6 0 1 0 7.5 7.5z"/>
         </svg>
       </button>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <svg class="icon-open" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="2" y1="5" x2="16" y2="5"/>
+          <line x1="2" y1="9" x2="16" y2="9"/>
+          <line x1="2" y1="13" x2="16" y2="13"/>
+        </svg>
+        <svg class="icon-close" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <line x1="3" y1="3" x2="15" y2="15"/>
+          <line x1="15" y1="3" x2="3" y2="15"/>
+        </svg>
+      </button>
     </div>
   </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="#skills" data-i18n="nav.skills">Skills</a>
+  </div>
 
   <!-- Hero -->
   <div class="hero">
     <p class="hero-label" data-i18n="hero.label">iOS Developer</p>
     <h1>
-      Vitalii<br />
-      <span class="dim">Obertynskyi</span>
+      <span data-i18n="hero.firstname">Vitalii</span><br />
+      <span class="dim" data-i18n="hero.lastname">Obertynskyi</span>
     </h1>
     <p class="hero-description" data-i18n="hero.desc">
       Crafting polished iOS experiences with Swift and SwiftUI.
@@ -714,6 +802,8 @@
     <p data-i18n="footer.role">iOS Developer</p>
   </footer>
 
+  <script src="projects-en.js"></script>
+  <script src="projects-ua.js"></script>
   <script>
     const html = document.documentElement;
 
@@ -725,6 +815,8 @@
         'nav.projects': 'Projects',
         'nav.contact': 'Contact',
         'hero.label': 'iOS Developer',
+        'hero.firstname': 'Vitalii',
+        'hero.lastname': 'Obertynskyi',
         'hero.desc': 'Crafting polished iOS experiences with Swift and SwiftUI. Focused on clean architecture, performance, and Apple platform best practices.',
         'hero.cta.view': 'View Projects',
         'hero.cta.touch': 'Get in Touch',
@@ -752,6 +844,8 @@
         'nav.projects': 'Проєкти',
         'nav.contact': 'Контакти',
         'hero.label': 'iOS Розробник',
+        'hero.firstname': 'Віталій',
+        'hero.lastname': 'Обертинський',
         'hero.desc': 'Створюю полірований iOS-досвід за допомогою Swift та SwiftUI. Зосереджений на чистій архітектурі, продуктивності та кращих практиках платформи Apple.',
         'hero.cta.view': 'Переглянути проєкти',
         'hero.cta.touch': "Зв'язатися",
@@ -794,14 +888,7 @@
     }
 
     function loadProjects(lang) {
-      const file = lang === 'en' ? 'projects-en.json' : 'projects-ua.json';
-      fetch(file)
-        .then(r => r.json())
-        .then(data => renderProjects(data))
-        .catch(() => {
-          document.getElementById('projectsList').innerHTML =
-            '<p style="color:var(--text-dim);font-size:14px">Could not load projects. Run a local server to preview.</p>';
-        });
+      renderProjects(lang === 'en' ? PROJECTS_EN : PROJECTS_UA);
     }
 
     // ── Language ──────────────────────────────────────────────────
@@ -824,6 +911,29 @@
 
     langToggle.addEventListener('click', () => {
       applyLang(currentLang === 'en' ? 'uk' : 'en');
+    });
+
+    // ── Hamburger ─────────────────────────────────────────────────
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      hamburger.classList.toggle('open', isOpen);
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+      });
+    });
+
+    document.addEventListener('click', e => {
+      if (!mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+        mobileMenu.classList.remove('open');
+        hamburger.classList.remove('open');
+      }
     });
 
     // ── Theme ─────────────────────────────────────────────────────
