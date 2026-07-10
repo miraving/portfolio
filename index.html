@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vitalii Obertynskyi — iOS Developer</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #080808;
+      --surface: #111111;
+      --border: #1e1e1e;
+      --muted: #3a3a3a;
+      --text: #e8e8e8;
+      --text-dim: #888;
+      --accent: #0a84ff;
+      --accent-dim: rgba(10, 132, 255, 0.12);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      background: rgba(8, 8, 8, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 48px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-label {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .dim {
+      color: var(--text-dim);
+    }
+
+    .hero-description {
+      font-size: 18px;
+      color: var(--text-dim);
+      max-width: 520px;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #1a90ff;
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--muted);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    /* Sections */
+    section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 48px;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 0 auto;
+      max-width: 800px;
+    }
+
+    /* About */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+
+    .about-text p:last-child {
+      margin-bottom: 0;
+    }
+
+    .about-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .stat {
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .skill-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .skill-card:hover {
+      border-color: var(--muted);
+      background: #161616;
+    }
+
+    .skill-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+      background: var(--accent-dim);
+    }
+
+    .skill-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* Projects */
+    .projects-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .project-card {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+      cursor: default;
+    }
+
+    .project-card:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .project-card:hover .project-arrow {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .project-card:hover .project-title {
+      color: var(--accent);
+    }
+
+    .project-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .project-title {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+      transition: color 0.2s;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .project-arrow {
+      font-size: 20px;
+      color: var(--text-dim);
+      opacity: 0;
+      transform: translateX(-6px);
+      transition: all 0.2s;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+
+    /* Contact */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .contact-text p {
+      color: var(--text-dim);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: var(--muted);
+      transform: translateX(4px);
+    }
+
+    .contact-link-icon {
+      font-size: 18px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .contact-link-label {
+      flex: 1;
+    }
+
+    .contact-link-arrow {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* Footer */
+    footer {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 32px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border);
+    }
+
+    footer p {
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      nav {
+        padding: 16px 24px;
+      }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .hero {
+        padding: 0 24px;
+      }
+
+      section {
+        padding: 72px 24px;
+      }
+
+      .about-grid,
+      .contact-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      footer {
+        padding: 24px;
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">VO</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <p class="hero-label">iOS Developer</p>
+    <h1>
+      Vitalii<br />
+      <span class="dim">Obertynskyi</span>
+    </h1>
+    <p class="hero-description">
+      Crafting polished iOS experiences with Swift and SwiftUI.
+      Focused on clean architecture, performance, and Apple platform best practices.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary">View Projects</a>
+      <a href="#contact" class="btn btn-ghost">Get in Touch</a>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- About -->
+  <section id="about">
+    <p class="section-label">About</p>
+    <h2 class="section-title">Building for Apple platforms</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          I'm an iOS developer passionate about creating intuitive and high-quality mobile applications.
+          I focus on writing clean, maintainable Swift code and delivering experiences users love.
+        </p>
+        <p>
+          I work across the full iOS stack — from UI design with SwiftUI and UIKit,
+          to networking, persistence, and App Store submission.
+        </p>
+        <p>
+          When I'm not writing Swift, I'm exploring new Apple APIs, contributing to open source,
+          and keeping up with what's new in the Apple ecosystem.
+        </p>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-number">Swift</div>
+          <div class="stat-label">Primary language</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">iOS</div>
+          <div class="stat-label">Platform focus</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">App Store</div>
+          <div class="stat-label">Shipped apps</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Skills -->
+  <section id="skills">
+    <p class="section-label">Skills</p>
+    <h2 class="section-title">Technologies & tools</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">🦅</div>
+        <span class="skill-name">Swift</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🖼</div>
+        <span class="skill-name">SwiftUI</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📱</div>
+        <span class="skill-name">UIKit</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔄</div>
+        <span class="skill-name">Combine</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">💾</div>
+        <span class="skill-name">Core Data</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🌐</div>
+        <span class="skill-name">URLSession</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🏗</div>
+        <span class="skill-name">MVVM / VIPER</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🧪</div>
+        <span class="skill-name">XCTest</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🔧</div>
+        <span class="skill-name">Xcode</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">📦</div>
+        <span class="skill-name">SPM / CocoaPods</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🌿</div>
+        <span class="skill-name">Git</span>
+      </div>
+      <div class="skill-card">
+        <div class="skill-icon">🚀</div>
+        <span class="skill-name">App Store Connect</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Projects -->
+  <section id="projects">
+    <p class="section-label">Projects</p>
+    <h2 class="section-title">Selected work</h2>
+    <div class="projects-list">
+
+      <div class="project-card">
+        <div>
+          <span class="project-tag">iOS App</span>
+          <h3 class="project-title">Project One</h3>
+          <p class="project-desc">A native iOS application built with SwiftUI and Combine. Features a clean architecture with MVVM, offline support via Core Data, and a fully custom UI.</p>
+          <div class="project-tags">
+            <span class="tag">SwiftUI</span>
+            <span class="tag">Combine</span>
+            <span class="tag">Core Data</span>
+          </div>
+        </div>
+        <span class="project-arrow">→</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <span class="project-tag">iOS App</span>
+          <h3 class="project-title">Project Two</h3>
+          <p class="project-desc">UIKit-based app with a custom navigation system, REST API integration, and smooth animations. Optimised for performance and accessibility.</p>
+          <div class="project-tags">
+            <span class="tag">UIKit</span>
+            <span class="tag">URLSession</span>
+            <span class="tag">VIPER</span>
+          </div>
+        </div>
+        <span class="project-arrow">→</span>
+      </div>
+
+      <div class="project-card">
+        <div>
+          <span class="project-tag">Open Source</span>
+          <h3 class="project-title">Project Three</h3>
+          <p class="project-desc">An open-source Swift package providing reusable components for iOS developers. Available via Swift Package Manager.</p>
+          <div class="project-tags">
+            <span class="tag">Swift</span>
+            <span class="tag">SPM</span>
+            <span class="tag">Open Source</span>
+          </div>
+        </div>
+        <span class="project-arrow">→</span>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Contact -->
+  <section id="contact">
+    <p class="section-label">Contact</p>
+    <h2 class="section-title">Let's work together</h2>
+    <div class="contact-inner">
+      <div class="contact-text">
+        <p>
+          Open to new opportunities, collaborations, and interesting iOS projects.
+          Feel free to reach out — I'd love to hear what you're building.
+        </p>
+        <a href="mailto:your@email.com" class="btn btn-primary">Send Email</a>
+      </div>
+      <div class="contact-links">
+        <a href="https://www.linkedin.com/in/vober" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-icon">💼</span>
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+        <a href="https://github.com/" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-icon">🐙</span>
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-arrow">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 Vitalii Obertynskyi</p>
+    <p>iOS Developer</p>
+  </footer>
+
+</body>
+</html>
